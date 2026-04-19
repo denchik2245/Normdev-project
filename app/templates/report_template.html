@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 24mm 18mm;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #222;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3 {
+            margin: 0 0 10px 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #1f3c88;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #1f3c88;
+            border-bottom: 1px solid #d9e0ef;
+            padding-bottom: 6px;
+            margin-top: 24px;
+        }
+
+        .meta {
+            background: #f5f7fb;
+            border: 1px solid #d9e0ef;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 18px;
+        }
+
+        .score {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1f3c88;
+            margin-top: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #d9e0ef;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #eef3ff;
+        }
+
+        .issue {
+            border: 1px solid #e5e7eb;
+            border-left: 5px solid #bbb;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+        }
+
+        .issue.high {
+            border-left-color: #d92d20;
+        }
+
+        .issue.medium {
+            border-left-color: #f79009;
+        }
+
+        .issue.low {
+            border-left-color: #1570ef;
+        }
+
+        .muted {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Отчет по аудиту веб-сайта</h1>
+
+    <div class="meta">
+        <p><strong>ID аудита:</strong> {{ audit.id }}</p>
+        <p><strong>URL:</strong> {{ audit.url }}</p>
+        <p><strong>Статус:</strong> {{ audit.status }}</p>
+        <p><strong>Создан:</strong> {{ audit.created_at }}</p>
+        <p><strong>Завершен:</strong> {{ audit.finished_at if audit.finished_at else "—" }}</p>
+        <div class="score">Итоговая оценка: {{ audit.total_score if audit.total_score is not none else "—" }}</div>
+    </div>
+
+    <h2>Метрики</h2>
+    {% if audit.metrics %}
+    <table>
+        <thead>
+            <tr>
+                <th>Метрика</th>
+                <th>Значение</th>
+                <th>Ед.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for metric in audit.metrics %}
+            <tr>
+                <td>{{ metric.metric_name }}</td>
+                <td>{{ metric.metric_value }}</td>
+                <td>{{ metric.unit if metric.unit else "—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="muted">Метрики отсутствуют.</p>
+    {% endif %}
+
+    <h2>Проблемы</h2>
+    {% if audit.issues %}
+        {% for issue in audit.issues %}
+        <div class="issue {{ issue.severity }}">
+            <h3>{{ issue.title }}</h3>
+            <p><strong>Категория:</strong> {{ issue.category }}</p>
+            <p><strong>Важность:</strong> {{ issue.severity }}</p>
+            <p><strong>Описание:</strong> {{ issue.description }}</p>
+            <p><strong>Рекомендация:</strong> {{ issue.recommendation if issue.recommendation else "—" }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p class="muted">Проблемы не обнаружены.</p>
+    {% endif %}
+</body>
+</html>

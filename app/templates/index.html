@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Запуск аудита сайта</h2>
+    <p>Введите адрес сайта, чтобы выполнить автоматический аудит производительности, SEO и технического состояния.</p>
+
+    {% if error %}
+        <div class="alert error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="post" action="/web/audits">
+        <input
+            type="text"
+            name="url"
+            placeholder="https://example.com"
+            value="{{ url_value }}"
+            required
+        >
+        <button type="submit">Запустить аудит</button>
+    </form>
+</div>
+
+<div class="card">
+    <div class="action-row">
+        <a class="link-button" href="/web/history">Перейти к истории проверок</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Что проверяет система</h3>
+    <ul>
+        <li>SEO-параметры: title, description, H1, canonical, robots, alt</li>
+        <li>Техническое состояние: HTTPS, robots.txt, sitemap.xml, ссылки</li>
+        <li>Производительность: скорость ответа, размер HTML, скрипты, изображения</li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="action-row top-actions">
+        <a class="link-button" href="/web">Новый аудит</a>
+    </div>
+
+    <h2>История проверок</h2>
+
+    {% if audits %}
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>URL</th>
+                    <th>Статус</th>
+                    <th>Оценка</th>
+                    <th>Состояние</th>
+                    <th>Дата</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for audit in audits %}
+                <tr>
+                    <td>{{ audit.id }}</td>
+                    <td class="url-cell">{{ audit.url }}</td>
+                    <td>
+                        <span class="badge {{ audit.status }}">{{ get_status_label(audit.status) }}</span>
+                    </td>
+                    <td>{{ audit.total_score if audit.total_score is not none else "—" }}</td>
+                    <td>
+                        <span class="mini-score {{ get_score_class(audit.total_score) }}">
+                            {{ get_score_label(audit.total_score) }}
+                        </span>
+                    </td>
+                    <td>{{ format_datetime(audit.created_at) }}</td>
+                    <td>
+                        <a href="/web/audits/{{ audit.id }}">Открыть</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty">История аудитов пока пуста.</p>
+    {% endif %}
+</div>
+{% endblock %}

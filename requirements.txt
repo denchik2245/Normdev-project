@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pydantic-settings
+python-dotenv
+jinja2
+httpx
+requests
+beautifulsoup4
+python-multipart
+weasyprint
