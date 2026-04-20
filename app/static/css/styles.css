@@ -400,6 +400,66 @@ button:hover {
     vertical-align: top;
 }
 
+.history-actions {
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.select-all-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.history-actions-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inline-delete-form {
+    margin: 0;
+}
+
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+    border-radius: 999px;
+    font-size: 18px;
+}
+
+.danger-button {
+    background: #c62828;
+}
+
+.danger-button:hover {
+    background: #a61f1f;
+}
+
+.secondary-danger {
+    background: #7a1f1f;
+}
+
+.secondary-danger:hover {
+    background: #641818;
+}
+
+.danger-icon-button {
+    background: #fdeaea;
+    color: #b42318;
+    border: 1px solid #f5c2c0;
+}
+
+.danger-icon-button:hover {
+    background: #fbd5d2;
+    color: #912018;
+}
+
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

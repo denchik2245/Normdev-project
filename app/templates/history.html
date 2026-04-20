@@ -9,12 +9,28 @@
     <h2>История проверок</h2>
 
     {% if audits %}
+        <div class="action-row history-actions">
+            <label class="select-all-control">
+                <input type="checkbox" id="select-all-audits">
+                <span>Выбрать все</span>
+            </label>
+
+            <form method="post" action="/web/history/delete-selected" id="bulk-delete-form">
+                <div id="bulk-delete-hidden-inputs"></div>
+                <button type="submit" class="danger-button">Удалить выбранные</button>
+            </form>
+
+            <form method="post" action="/web/history/delete-all" onsubmit="return confirm('Удалить всю историю проверок?');">
+                <button type="submit" class="danger-button secondary-danger">Удалить все</button>
+            </form>
+        </div>
+
         <table class="history-table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th></th>
+                    <th>№</th>
                     <th>URL</th>
-                    <th>Статус</th>
                     <th>Оценка</th>
                     <th>Состояние</th>
                     <th>Дата</th>
@@ -24,11 +40,16 @@
             <tbody>
                 {% for audit in audits %}
                 <tr>
-                    <td>{{ audit.id }}</td>
-                    <td class="url-cell">{{ audit.url }}</td>
                     <td>
-                        <span class="badge {{ audit.status }}">{{ get_status_label(audit.status) }}</span>
+                        <input
+                            type="checkbox"
+                            class="audit-select-checkbox"
+                            value="{{ audit.id }}"
+                            aria-label="Выбрать аудит {{ audit.id }}"
+                        >
                     </td>
+                    <td>{{ audits|length - loop.index0 }}</td>
+                    <td class="url-cell">{{ audit.url }}</td>
                     <td>{{ audit.total_score if audit.total_score is not none else "—" }}</td>
                     <td>
                         <span class="mini-score {{ get_score_class(audit.total_score) }}">
@@ -36,8 +57,14 @@
                         </span>
                     </td>
                     <td>{{ format_datetime(audit.created_at) }}</td>
-                    <td>
+                    <td class="history-actions-cell">
                         <a href="/web/audits/{{ audit.id }}">Открыть</a>
+                        <form method="post" action="/web/history/delete" class="inline-delete-form" onsubmit="return confirm('Удалить эту проверку из истории?');">
+                            <input type="hidden" name="audit_id" value="{{ audit.id }}">
+                            <button type="submit" class="icon-button danger-icon-button" aria-label="Удалить аудит {{ audit.id }}">
+                                🗑
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -47,4 +74,56 @@
         <p class="empty">История аудитов пока пуста.</p>
     {% endif %}
 </div>
+
+<script>
+    const selectAllAuditsCheckbox = document.getElementById("select-all-audits");
+    const auditCheckboxes = Array.from(document.querySelectorAll(".audit-select-checkbox"));
+    const bulkDeleteForm = document.getElementById("bulk-delete-form");
+    const bulkDeleteHiddenInputs = document.getElementById("bulk-delete-hidden-inputs");
+
+    if (selectAllAuditsCheckbox) {
+        selectAllAuditsCheckbox.addEventListener("change", () => {
+            auditCheckboxes.forEach((checkbox) => {
+                checkbox.checked = selectAllAuditsCheckbox.checked;
+            });
+        });
+    }
+
+    auditCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+            if (!selectAllAuditsCheckbox) {
+                return;
+            }
+            selectAllAuditsCheckbox.checked = auditCheckboxes.every((item) => item.checked);
+        });
+    });
+
+    if (bulkDeleteForm) {
+        bulkDeleteForm.addEventListener("submit", (event) => {
+            const selectedIds = auditCheckboxes
+                .filter((checkbox) => checkbox.checked)
+                .map((checkbox) => checkbox.value);
+
+            if (selectedIds.length === 0) {
+                event.preventDefault();
+                window.alert("Сначала выберите хотя бы одну проверку.");
+                return;
+            }
+
+            if (!window.confirm(`Удалить выбранные проверки: ${selectedIds.length} шт.?`)) {
+                event.preventDefault();
+                return;
+            }
+
+            bulkDeleteHiddenInputs.innerHTML = "";
+            selectedIds.forEach((id) => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "audit_ids";
+                input.value = id;
+                bulkDeleteHiddenInputs.appendChild(input);
+            });
+        });
+    }
+</script>
 {% endblock %}

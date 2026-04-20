@@ -176,3 +176,32 @@ def web_history(
             "format_datetime": format_datetime,
         }
     )
+
+
+@router.post("/web/history/delete")
+def web_delete_history_item(
+    audit_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    repository = AuditRepository(db)
+    repository.delete_audit_by_id(audit_id)
+    return RedirectResponse(url="/web/history", status_code=303)
+
+
+@router.post("/web/history/delete-selected")
+def web_delete_selected_history_items(
+    audit_ids: list[int] = Form(default=[]),
+    db: Session = Depends(get_db)
+):
+    repository = AuditRepository(db)
+    repository.delete_audits_by_ids(audit_ids)
+    return RedirectResponse(url="/web/history", status_code=303)
+
+
+@router.post("/web/history/delete-all")
+def web_delete_all_history_items(
+    db: Session = Depends(get_db)
+):
+    repository = AuditRepository(db)
+    repository.delete_all_audits()
+    return RedirectResponse(url="/web/history", status_code=303)

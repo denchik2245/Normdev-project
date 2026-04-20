@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 from sqlalchemy.orm import Session, selectinload
 
@@ -115,3 +116,62 @@ class AuditRepository:
             .filter(Audit.id == audit_id)
             .first()
         )
+
+    def delete_audit_by_id(self, audit_id: int) -> bool:
+        audit = (
+            self.db.query(Audit)
+            .options(selectinload(Audit.reports))
+            .filter(Audit.id == audit_id)
+            .first()
+        )
+        if audit is None:
+            return False
+
+        self._delete_report_files(audit.reports)
+        self.db.delete(audit)
+        self.db.commit()
+        return True
+
+    def delete_audits_by_ids(self, audit_ids: list[int]) -> int:
+        if not audit_ids:
+            return 0
+
+        audits = (
+            self.db.query(Audit)
+            .options(selectinload(Audit.reports))
+            .filter(Audit.id.in_(audit_ids))
+            .all()
+        )
+        if not audits:
+            return 0
+
+        for audit in audits:
+            self._delete_report_files(audit.reports)
+            self.db.delete(audit)
+
+        self.db.commit()
+        return len(audits)
+
+    def delete_all_audits(self) -> int:
+        audits = (
+            self.db.query(Audit)
+            .options(selectinload(Audit.reports))
+            .all()
+        )
+        if not audits:
+            return 0
+
+        for audit in audits:
+            self._delete_report_files(audit.reports)
+            self.db.delete(audit)
+
+        self.db.commit()
+        return len(audits)
+
+    @staticmethod
+    def _delete_report_files(reports: list[AuditReport]) -> None:
+        for report in reports:
+            try:
+                Path(report.file_path).unlink(missing_ok=True)
+            except OSError:
+                continue
