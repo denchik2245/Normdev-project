@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Система аудита веб-сайтов</h1>
-            <nav>
-                <a href="/web">Главная</a>
-                <a href="/web/history">История проверок</a>
-                <a href="/docs">Swagger API</a>
-            </nav>
-        </div>
-    </header>
+<body class="{% block body_class %}{% endblock %}">
+    {% block header %}
+        <header>
+            <div class="container">
+                <h1>Система аудита веб-сайтов</h1>
+                <nav>
+                    <a href="/web">Главная</a>
+                    <a href="/web/history">История проверок</a>
+                    <a href="/docs">Swagger API</a>
+                </nav>
+            </div>
+        </header>
+    {% endblock %}
 
-    <main class="container">
+    <main class="{% block main_wrapper_class %}container{% endblock %} {% block main_class %}{% endblock %}">
         {% block content %}{% endblock %}
     </main>
 </body>

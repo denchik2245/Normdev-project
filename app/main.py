@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api.audit import router as audit_router
@@ -23,9 +24,7 @@ app.include_router(web_router)
 
 @app.get("/", tags=["Root"])
 def root():
-    return {
-        "message": "Site Audit Service is running"
-    }
+    return RedirectResponse(url="/web", status_code=307)
 
 
 @app.get("/health", tags=["Health"])

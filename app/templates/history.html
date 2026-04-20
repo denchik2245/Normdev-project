@@ -1,129 +1,136 @@
 {% extends "base.html" %}
 
-{% block content %}
-<div class="card">
-    <div class="action-row top-actions">
-        <a class="link-button" href="/web">Новый аудит</a>
+{% block body_class %}history-page{% endblock %}
+
+{% block header %}
+<header class="history-header home-header">
+    <div class="home-header__inner">
+        <a href="/web" class="home-logo" aria-label="Normdev">
+            <svg width="45" height="30" viewBox="0 0 45 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <g clip-path="url(#history-logo-clip)">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.621094 0.225643V10.1748H2.16434V4.22445C2.16434 2.38494 3.17514 1.38972 4.7374 1.38972C6.20751 1.38972 6.79556 2.38494 6.79556 4.22445V10.1748H8.33881V3.77316C8.33881 1.67065 7.27243 0 5.04898 0C3.70759 0 2.56808 0.600717 2.07219 1.93365L2.0166 0.225643H0.621094ZM17.4418 1.71548L14.0642 7.65989C13.6926 7.04124 13.4966 6.20741 13.4966 5.19875C13.4966 2.89002 14.525 1.5003 16.3271 1.5003C16.7411 1.5003 17.1141 1.57352 17.4433 1.71399L17.4418 1.71548ZM15.0706 8.61775C15.4334 8.80155 15.8532 8.89719 16.3257 8.89719C18.1264 8.89719 19.1562 7.50747 19.1562 5.19875C19.1562 4.10789 18.9265 3.22325 18.4935 2.59115L15.0706 8.61626V8.61775ZM16.3257 10.4005C19.0275 10.4005 20.7726 8.35475 20.7726 5.20024C20.7726 2.04573 19.0275 0 16.3257 0C13.6239 0 11.8788 2.04573 11.8788 5.20024C11.8788 8.35475 13.6239 10.4005 16.3257 10.4005ZM28.1173 0.225643H24.4047V1.61536H26.9412V8.78661H24.4047V10.1763H31.6631V8.78661H28.4844V4.24387C28.4844 2.53586 29.1822 1.61536 30.6713 1.61536H32.6198V0.225643H30.6713C29.3855 0.225643 28.5941 0.82636 28.246 2.10251L28.1173 0.225643ZM35.5892 0.225643V10.1748H37.1515V4.20502C37.1515 2.40287 37.6108 1.38972 38.3642 1.38972C39.2097 1.38972 39.5212 2.19665 39.5212 4.20502V10.1748H41.0645V4.20502C41.0645 2.40287 41.5604 1.38972 42.4059 1.38972C43.1592 1.38972 43.4532 2.17872 43.4532 4.20502V10.1748H44.9965V4.20502C44.9965 1.27615 44.3528 0 42.8652 0C41.8544 0 41.0645 0.712791 40.7149 1.85894C40.4209 0.563359 39.906 0 39.0605 0C38.0862 0 37.4251 0.563359 37.0579 1.59594L37.0023 0.225643H35.5878H35.5892Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.63635 14.3815H7.0931V19.0752C6.54162 18.0799 5.54985 17.536 4.09729 17.536C1.2858 17.536 0 19.9957 0 22.7363C0 25.4768 1.2858 27.9365 4.09729 27.9365C5.60397 27.9365 6.65133 27.3163 7.18379 26.2853L7.23938 27.7123H8.63635V14.3845V14.3815ZM1.61639 22.7348C1.61639 20.7637 2.4063 18.9616 4.42788 18.9616C6.44947 18.9616 7.23938 20.8011 7.23938 22.7348C7.23938 24.6684 6.43045 26.4332 4.42788 26.4332C2.42532 26.4332 1.61639 24.6311 1.61639 22.7348Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2695 22.7346C12.2695 25.8877 14.0337 27.9349 16.7354 27.9349C18.6093 27.9349 20.2447 26.7708 20.8152 24.8939L19.1608 24.7624C18.7205 25.8129 17.7828 26.4331 16.7354 26.4331C15.0635 26.4331 14.0527 25.2511 13.924 23.2233H20.9805L20.9615 22.5105C20.7962 18.9809 18.8843 17.5359 16.7354 17.5359C14.0337 17.5359 12.2695 19.5816 12.2695 22.7361V22.7346ZM13.9415 21.8336C14.199 20.0688 15.1907 19.0362 16.734 19.0362C17.9291 19.0362 19.013 19.749 19.288 21.8336H13.94H13.9415Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M33.044 17.76H31.391L28.5239 26.058L25.6569 17.76H24.0039L27.5497 27.7092H29.4982L33.044 17.76Z" fill="white"/>
+                    <path d="M44.7834 28.5356H36.1836V30.0001H44.7834V28.5356Z" fill="#47F031"/>
+                </g>
+                <defs>
+                    <clipPath id="history-logo-clip">
+                        <rect width="45" height="30" fill="white"/>
+                    </clipPath>
+                </defs>
+            </svg>
+        </a>
+
+        <nav class="home-nav" aria-label="Основное меню">
+            <a href="/web/history" aria-current="page">История проверок</a>
+            <a href="/docs">Swagger API</a>
+        </nav>
+
+        <a href="/web" class="home-header__cta">Начать проверку</a>
     </div>
+</header>
+{% endblock %}
 
-    <h2>История проверок</h2>
+{% block main_wrapper_class %}{% endblock %}
 
-    {% if audits %}
-        <div class="action-row history-actions">
-            <label class="select-all-control">
-                <input type="checkbox" id="select-all-audits">
-                <span>Выбрать все</span>
+{% block main_class %}history-main{% endblock %}
+
+{% block content %}
+<section class="history-shell">
+    <h1 class="history-title">История проверок</h1>
+
+    <section class="history-panel">
+        <div class="history-panel__head">
+            <label class="history-checkbox history-checkbox--header">
+                <input type="checkbox" id="select-all-audits" aria-label="Выбрать все аудиты">
+                <span></span>
             </label>
-
-            <form method="post" action="/web/history/delete-selected" id="bulk-delete-form">
-                <div id="bulk-delete-hidden-inputs"></div>
-                <button type="submit" class="danger-button">Удалить выбранные</button>
-            </form>
-
-            <form method="post" action="/web/history/delete-all" onsubmit="return confirm('Удалить всю историю проверок?');">
-                <button type="submit" class="danger-button secondary-danger">Удалить все</button>
-            </form>
+            <span>№</span>
+            <span>URL</span>
+            <span>Состояние</span>
+            <span>Дата</span>
+            <span class="history-panel__actions-label"></span>
         </div>
 
-        <table class="history-table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>№</th>
-                    <th>URL</th>
-                    <th>Оценка</th>
-                    <th>Состояние</th>
-                    <th>Дата</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+        {% if audits %}
+            <div class="history-list">
                 {% for audit in audits %}
-                <tr>
-                    <td>
-                        <input
-                            type="checkbox"
-                            class="audit-select-checkbox"
-                            value="{{ audit.id }}"
-                            aria-label="Выбрать аудит {{ audit.id }}"
-                        >
-                    </td>
-                    <td>{{ audits|length - loop.index0 }}</td>
-                    <td class="url-cell">{{ audit.url }}</td>
-                    <td>{{ audit.total_score if audit.total_score is not none else "—" }}</td>
-                    <td>
-                        <span class="mini-score {{ get_score_class(audit.total_score) }}">
-                            {{ get_score_label(audit.total_score) }}
+                    {% set score_class = get_score_class(audit.total_score) %}
+                    {% set display_label = "Ошибка" if audit.total_score is none else ("Отлично" if audit.total_score >= 90 else "Хорошо" if audit.total_score >= 75 else "Средне" if audit.total_score >= 50 else "Плохо") %}
+                    {% set display_score = audit.total_score | int if audit.total_score is not none else "-" %}
+                    <div class="history-row">
+                        <label class="history-checkbox">
+                            <input
+                                type="checkbox"
+                                class="audit-select-checkbox"
+                                value="{{ audit.id }}"
+                                aria-label="Выбрать аудит {{ audit.id }}"
+                            >
+                            <span></span>
+                        </label>
+                        <span class="history-row__index">{{ audits|length - loop.index0 }}</span>
+                        <span class="history-row__url">{{ audit.url }}</span>
+                        <span class="history-row__status">
+                            <span class="history-pill {{ score_class }}">{{ display_label }}</span>
+                            <span class="history-pill {{ score_class }}">{{ display_score }}</span>
                         </span>
-                    </td>
-                    <td>{{ format_datetime(audit.created_at) }}</td>
-                    <td class="history-actions-cell">
-                        <a href="/web/audits/{{ audit.id }}">Открыть</a>
-                        <form method="post" action="/web/history/delete" class="inline-delete-form" onsubmit="return confirm('Удалить эту проверку из истории?');">
-                            <input type="hidden" name="audit_id" value="{{ audit.id }}">
-                            <button type="submit" class="icon-button danger-icon-button" aria-label="Удалить аудит {{ audit.id }}">
-                                🗑
-                            </button>
-                        </form>
-                    </td>
-                </tr>
+                        <span class="history-row__date">{{ format_datetime(audit.created_at) }}</span>
+                        <span class="history-row__actions">
+                            <a href="/web/audits/{{ audit.id }}" class="history-open-button">Открыть</a>
+                            <form method="post" action="/web/history/delete" class="history-delete-form" onsubmit="return confirm('Удалить эту проверку из истории?');">
+                                <input type="hidden" name="audit_id" value="{{ audit.id }}">
+                                <button type="submit" class="history-delete-button" aria-label="Удалить аудит {{ audit.id }}">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M5.83337 7.49996V14.1666C5.83337 15.0871 6.57957 15.8333 7.50004 15.8333H12.5C13.4205 15.8333 14.1667 15.0871 14.1667 14.1666V7.49996" stroke="#5D6771" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M4.16663 5.83329H15.8333" stroke="#5D6771" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M8.33337 9.16663V12.5" stroke="#5D6771" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M11.6666 9.16663V12.5" stroke="#5D6771" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M7.5 5.83329V4.99996C7.5 4.53972 7.8731 4.16663 8.33333 4.16663H11.6667C12.1269 4.16663 12.5 4.53972 12.5 4.99996V5.83329" stroke="#5D6771" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </span>
+                    </div>
                 {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p class="empty">История аудитов пока пуста.</p>
-    {% endif %}
-</div>
+            </div>
+        {% else %}
+            <div class="history-empty">
+                <p class="history-empty__title">История аудитов пока пуста</p>
+                <p class="history-empty__text">Запустите первую проверку, и результаты появятся здесь.</p>
+                <a href="/web" class="history-open-button">Начать проверку</a>
+            </div>
+        {% endif %}
+    </section>
+</section>
 
 <script>
     const selectAllAuditsCheckbox = document.getElementById("select-all-audits");
     const auditCheckboxes = Array.from(document.querySelectorAll(".audit-select-checkbox"));
-    const bulkDeleteForm = document.getElementById("bulk-delete-form");
-    const bulkDeleteHiddenInputs = document.getElementById("bulk-delete-hidden-inputs");
+
+    function syncSelectAllState() {
+        if (!selectAllAuditsCheckbox || auditCheckboxes.length === 0) {
+            return;
+        }
+
+        const checkedCount = auditCheckboxes.filter((checkbox) => checkbox.checked).length;
+        selectAllAuditsCheckbox.checked = checkedCount === auditCheckboxes.length;
+        selectAllAuditsCheckbox.indeterminate = checkedCount > 0 && checkedCount < auditCheckboxes.length;
+    }
 
     if (selectAllAuditsCheckbox) {
         selectAllAuditsCheckbox.addEventListener("change", () => {
             auditCheckboxes.forEach((checkbox) => {
                 checkbox.checked = selectAllAuditsCheckbox.checked;
             });
+            syncSelectAllState();
         });
     }
 
     auditCheckboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", () => {
-            if (!selectAllAuditsCheckbox) {
-                return;
-            }
-            selectAllAuditsCheckbox.checked = auditCheckboxes.every((item) => item.checked);
-        });
+        checkbox.addEventListener("change", syncSelectAllState);
     });
 
-    if (bulkDeleteForm) {
-        bulkDeleteForm.addEventListener("submit", (event) => {
-            const selectedIds = auditCheckboxes
-                .filter((checkbox) => checkbox.checked)
-                .map((checkbox) => checkbox.value);
-
-            if (selectedIds.length === 0) {
-                event.preventDefault();
-                window.alert("Сначала выберите хотя бы одну проверку.");
-                return;
-            }
-
-            if (!window.confirm(`Удалить выбранные проверки: ${selectedIds.length} шт.?`)) {
-                event.preventDefault();
-                return;
-            }
-
-            bulkDeleteHiddenInputs.innerHTML = "";
-            selectedIds.forEach((id) => {
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "audit_ids";
-                input.value = id;
-                bulkDeleteHiddenInputs.appendChild(input);
-            });
-        });
-    }
+    syncSelectAllState();
 </script>
 {% endblock %}

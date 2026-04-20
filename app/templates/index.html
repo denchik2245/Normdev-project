@@ -1,17 +1,55 @@
 {% extends "base.html" %}
 
+{% block body_class %}home-page{% endblock %}
+
+{% block header %}
+<header class="home-header">
+    <div class="home-header__inner">
+        <a href="/web" class="home-logo" aria-label="Normdev">
+            <svg width="45" height="30" viewBox="0 0 45 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <g clip-path="url(#clip0_1_52)">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.621094 0.225643V10.1748H2.16434V4.22445C2.16434 2.38494 3.17514 1.38972 4.7374 1.38972C6.20751 1.38972 6.79556 2.38494 6.79556 4.22445V10.1748H8.33881V3.77316C8.33881 1.67065 7.27243 0 5.04898 0C3.70759 0 2.56808 0.600717 2.07219 1.93365L2.0166 0.225643H0.621094ZM17.4418 1.71548L14.0642 7.65989C13.6926 7.04124 13.4966 6.20741 13.4966 5.19875C13.4966 2.89002 14.525 1.5003 16.3271 1.5003C16.7411 1.5003 17.1141 1.57352 17.4433 1.71399L17.4418 1.71548ZM15.0706 8.61775C15.4334 8.80155 15.8532 8.89719 16.3257 8.89719C18.1264 8.89719 19.1562 7.50747 19.1562 5.19875C19.1562 4.10789 18.9265 3.22325 18.4935 2.59115L15.0706 8.61626V8.61775ZM16.3257 10.4005C19.0275 10.4005 20.7726 8.35475 20.7726 5.20024C20.7726 2.04573 19.0275 0 16.3257 0C13.6239 0 11.8788 2.04573 11.8788 5.20024C11.8788 8.35475 13.6239 10.4005 16.3257 10.4005ZM28.1173 0.225643H24.4047V1.61536H26.9412V8.78661H24.4047V10.1763H31.6631V8.78661H28.4844V4.24387C28.4844 2.53586 29.1822 1.61536 30.6713 1.61536H32.6198V0.225643H30.6713C29.3855 0.225643 28.5941 0.82636 28.246 2.10251L28.1173 0.225643ZM35.5892 0.225643V10.1748H37.1515V4.20502C37.1515 2.40287 37.6108 1.38972 38.3642 1.38972C39.2097 1.38972 39.5212 2.19665 39.5212 4.20502V10.1748H41.0645V4.20502C41.0645 2.40287 41.5604 1.38972 42.4059 1.38972C43.1592 1.38972 43.4532 2.17872 43.4532 4.20502V10.1748H44.9965V4.20502C44.9965 1.27615 44.3528 0 42.8652 0C41.8544 0 41.0645 0.712791 40.7149 1.85894C40.4209 0.563359 39.906 0 39.0605 0C38.0862 0 37.4251 0.563359 37.0579 1.59594L37.0023 0.225643H35.5878H35.5892Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.63635 14.3815H7.0931V19.0752C6.54162 18.0799 5.54985 17.536 4.09729 17.536C1.2858 17.536 0 19.9957 0 22.7363C0 25.4768 1.2858 27.9365 4.09729 27.9365C5.60397 27.9365 6.65133 27.3163 7.18379 26.2853L7.23938 27.7123H8.63635V14.3845V14.3815ZM1.61639 22.7348C1.61639 20.7637 2.4063 18.9616 4.42788 18.9616C6.44947 18.9616 7.23938 20.8011 7.23938 22.7348C7.23938 24.6684 6.43045 26.4332 4.42788 26.4332C2.42532 26.4332 1.61639 24.6311 1.61639 22.7348Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2695 22.7346C12.2695 25.8877 14.0337 27.9349 16.7354 27.9349C18.6093 27.9349 20.2447 26.7708 20.8152 24.8939L19.1608 24.7624C18.7205 25.8129 17.7828 26.4331 16.7354 26.4331C15.0635 26.4331 14.0527 25.2511 13.924 23.2233H20.9805L20.9615 22.5105C20.7962 18.9809 18.8843 17.5359 16.7354 17.5359C14.0337 17.5359 12.2695 19.5816 12.2695 22.7361V22.7346ZM13.9415 21.8336C14.199 20.0688 15.1907 19.0362 16.734 19.0362C17.9291 19.0362 19.013 19.749 19.288 21.8336H13.94H13.9415Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M33.044 17.76H31.391L28.5239 26.058L25.6569 17.76H24.0039L27.5497 27.7092H29.4982L33.044 17.76Z" fill="white"/>
+                    <path d="M44.7834 28.5356H36.1836V30.0001H44.7834V28.5356Z" fill="#47F031"/>
+                </g>
+                <defs>
+                    <clipPath id="clip0_1_52">
+                        <rect width="45" height="30" fill="white"/>
+                    </clipPath>
+                </defs>
+            </svg>
+        </a>
+
+        <nav class="home-nav" aria-label="Основное меню">
+            <a href="/web/history">История проверок</a>
+            <a href="/docs">Swagger API</a>
+        </nav>
+
+        <a href="#audit-form" class="home-header__cta">Начать проверку</a>
+    </div>
+</header>
+{% endblock %}
+
+{% block main_wrapper_class %}{% endblock %}
+
+{% block main_class %}home-main{% endblock %}
+
 {% block content %}
-<div class="card">
-    <h2>Запуск аудита сайта</h2>
-    <p>Введите адрес сайта, чтобы выполнить автоматический аудит производительности, SEO и технического состояния.</p>
+<section class="hero">
+    <div class="hero-copy">
+        <h1 class="hero-title">Запуск аудита сайта</h1>
+        <p class="hero-subtitle">Введите адрес сайта, чтобы выполнить автоматический аудит производительности, SEO и технического состояния.</p>
+    </div>
 
     {% if error %}
-        <div class="alert error">
+        <div class="alert error home-alert">
             {{ error }}
         </div>
     {% endif %}
 
-    <form method="post" action="/web/audits" id="audit-form">
+    <form method="post" action="/web/audits" id="audit-form" class="hero-form">
         <input
             type="text"
             name="url"
@@ -20,33 +58,28 @@
             value="{{ url_value }}"
             required
         >
-        <button type="submit" id="audit-submit">Запустить аудит</button>
+        <button type="submit" id="audit-submit" class="hero-submit">Запустить аудит</button>
     </form>
-</div>
+</section>
 
-<div class="card">
-    <div class="action-row">
-        <a class="link-button" href="/web/history">Перейти к истории проверок</a>
-    </div>
-</div>
-
-<div class="card">
-    <h3>Что проверяет система</h3>
-    <div class="feature-grid">
+<section class="home-categories">
+    <h2 class="home-categories__title">Что проверяет система?</h2>
+    <div class="home-categories__grid">
         {% for category_id, category in metric_catalog.items() %}
         <button
             type="button"
-            class="feature-card"
+            class="home-category-card"
             data-category-button
             data-category-id="{{ category_id }}"
         >
-            <span class="feature-card-eyebrow">Категория</span>
-            <strong>{{ category.title }}</strong>
-            <span>{{ category.description }}</span>
+            <span>{{ category.title }}</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M5.28589 14.714L14.714 5.28594M14.714 5.28594V12.357M14.714 5.28594H7.64291" stroke="#404A54" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </button>
         {% endfor %}
     </div>
-</div>
+</section>
 
 <div class="modal-overlay loader-overlay" id="audit-loader" hidden>
     <div class="modal-card loader-card">
