@@ -345,6 +345,68 @@ def count_problematic_metrics(metrics) -> int:
     )
 
 
+def get_metric_catalog() -> dict[str, dict[str, object]]:
+    return {
+        "seo": {
+            "title": "SEO",
+            "description": "Проверки структуры страницы, индексации и базовой поисковой оптимизации.",
+            "metrics": [
+                "Длина title",
+                "Длина meta description",
+                "Количество H1, H2, H3",
+                "Пропуски уровней заголовков",
+                "Наличие canonical",
+                "Наличие meta robots",
+                "Наличие lang и favicon",
+                "Open Graph и structured data",
+                "Внутренние и внешние SEO-ссылки",
+                "Пустые и дублирующиеся анкоры",
+                "Изображения без alt",
+                "Доля lazy loading у изображений",
+                "Объем текста и соотношение текста к HTML",
+            ],
+        },
+        "technical": {
+            "title": "Технические",
+            "description": "Проверки доступности, безопасности, заголовков ответа и технического здоровья сайта.",
+            "metrics": [
+                "HTTP-статусы и редиректы",
+                "HTTPS и HSTS",
+                "Content-Type и charset",
+                "Meta viewport",
+                "Compression и Cache-Control",
+                "Security headers",
+                "X-Robots-Tag",
+                "www/non-www согласованность",
+                "robots.txt и sitemap.xml",
+                "Количество ссылок и битые ссылки",
+                "Mixed content",
+                "Формы и поля без label",
+                "Технические проверки canonical",
+            ],
+        },
+        "performance": {
+            "title": "Производительность",
+            "description": "Проверки веса страницы, DOM, скриптов, изображений и подсказок загрузки.",
+            "metrics": [
+                "Время ответа страницы",
+                "Размер страницы и HTML",
+                "Количество DOM-узлов",
+                "Количество script и CSS",
+                "Внешние и inline-скрипты",
+                "Async и defer-скрипты",
+                "Render-blocking scripts",
+                "Third-party scripts",
+                "Inline CSS и JS",
+                "Preload, preconnect и resource hints",
+                "Количество изображений",
+                "Lazy loading и srcset",
+                "Размеры изображений и iframe",
+            ],
+        },
+    }
+
+
 def get_metric_display_name(metric_name: str) -> str:
     metric_names = {
         "status_code": "HTTP-статус страницы",

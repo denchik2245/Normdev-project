@@ -11,15 +11,16 @@
         </div>
     {% endif %}
 
-    <form method="post" action="/web/audits">
+    <form method="post" action="/web/audits" id="audit-form">
         <input
             type="text"
             name="url"
+            id="audit-url"
             placeholder="https://example.com"
             value="{{ url_value }}"
             required
         >
-        <button type="submit">Запустить аудит</button>
+        <button type="submit" id="audit-submit">Запустить аудит</button>
     </form>
 </div>
 
@@ -31,10 +32,228 @@
 
 <div class="card">
     <h3>Что проверяет система</h3>
-    <ul>
-        <li>SEO-параметры: title, description, H1, canonical, robots, alt</li>
-        <li>Техническое состояние: HTTPS, robots.txt, sitemap.xml, ссылки</li>
-        <li>Производительность: скорость ответа, размер HTML, скрипты, изображения</li>
-    </ul>
+    <div class="feature-grid">
+        {% for category_id, category in metric_catalog.items() %}
+        <button
+            type="button"
+            class="feature-card"
+            data-category-button
+            data-category-id="{{ category_id }}"
+        >
+            <span class="feature-card-eyebrow">Категория</span>
+            <strong>{{ category.title }}</strong>
+            <span>{{ category.description }}</span>
+        </button>
+        {% endfor %}
+    </div>
 </div>
+
+<div class="modal-overlay loader-overlay" id="audit-loader" hidden>
+    <div class="modal-card loader-card">
+        <div class="loader-spinner"></div>
+        <h3>Анализ сайта выполняется</h3>
+        <p class="loader-text" id="loader-text">Подготавливаем проверку страницы и собираем первичные данные.</p>
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="loader-progress-bar"></div>
+        </div>
+        <div class="loader-progress-meta">
+            <span>Прогресс анализа</span>
+            <strong id="loader-progress-value">0%</strong>
+        </div>
+        <p class="loader-hint">Окно закроется автоматически, когда аудит будет завершен.</p>
+    </div>
+</div>
+
+<div class="modal-overlay category-overlay" id="category-modal" hidden>
+    <div class="modal-card category-modal-card">
+        <div class="modal-header">
+            <div>
+                <p class="modal-eyebrow">Что анализирует система</p>
+                <h3 id="category-modal-title">Категория</h3>
+            </div>
+            <button type="button" class="modal-close" id="category-modal-close" aria-label="Закрыть окно">×</button>
+        </div>
+        <p class="modal-description" id="category-modal-description"></p>
+        <ul class="metric-preview-list" id="category-modal-metrics"></ul>
+    </div>
+</div>
+
+<script>
+    const metricCatalog = {{ metric_catalog | tojson }};
+
+    const auditForm = document.getElementById("audit-form");
+    const auditUrlInput = document.getElementById("audit-url");
+    const auditSubmitButton = document.getElementById("audit-submit");
+    const auditLoader = document.getElementById("audit-loader");
+    const loaderText = document.getElementById("loader-text");
+    const loaderProgressBar = document.getElementById("loader-progress-bar");
+    const loaderProgressValue = document.getElementById("loader-progress-value");
+
+    const categoryModal = document.getElementById("category-modal");
+    const categoryModalTitle = document.getElementById("category-modal-title");
+    const categoryModalDescription = document.getElementById("category-modal-description");
+    const categoryModalMetrics = document.getElementById("category-modal-metrics");
+    const categoryModalClose = document.getElementById("category-modal-close");
+    const categoryButtons = document.querySelectorAll("[data-category-button]");
+
+    let loaderIntervalId = null;
+
+    function syncBodyModalState() {
+        if (auditLoader.hidden && categoryModal.hidden) {
+            document.body.classList.remove("modal-open");
+        } else {
+            document.body.classList.add("modal-open");
+        }
+    }
+
+    function resetLoaderState() {
+        if (loaderIntervalId) {
+            window.clearInterval(loaderIntervalId);
+            loaderIntervalId = null;
+        }
+        auditLoader.hidden = true;
+        loaderProgressBar.style.width = "0%";
+        loaderProgressValue.textContent = "0%";
+        loaderText.textContent = "Подготавливаем проверку страницы и собираем первичные данные.";
+    }
+
+    function openLoader() {
+        categoryModal.hidden = true;
+        resetLoaderState();
+
+        const steps = [
+            { progress: 12, text: "Проверяем доступность сайта и получаем HTML-страницу." },
+            { progress: 28, text: "Анализируем SEO-параметры и структуру документа." },
+            { progress: 47, text: "Проверяем технические настройки, ссылки и безопасность." },
+            { progress: 66, text: "Оцениваем производительность страницы и вес ресурсов." },
+            { progress: 82, text: "Формируем итоговую оценку и собираем отчет." },
+            { progress: 92, text: "Почти готово. Сохраняем результаты аудита." }
+        ];
+
+        let stepIndex = 0;
+        auditLoader.hidden = false;
+        syncBodyModalState();
+
+        loaderIntervalId = window.setInterval(() => {
+            if (stepIndex >= steps.length) {
+                return;
+            }
+
+            loaderProgressBar.style.width = `${steps[stepIndex].progress}%`;
+            loaderProgressValue.textContent = `${steps[stepIndex].progress}%`;
+            loaderText.textContent = steps[stepIndex].text;
+            stepIndex += 1;
+        }, 900);
+    }
+
+    function finishLoader() {
+        resetLoaderState();
+        auditLoader.hidden = false;
+        loaderProgressBar.style.width = "100%";
+        loaderProgressValue.textContent = "100%";
+        loaderText.textContent = "Аудит завершен. Открываем страницу с результатом.";
+    }
+
+    function closeModal(modalElement) {
+        if (modalElement === auditLoader) {
+            resetLoaderState();
+        } else {
+            modalElement.hidden = true;
+        }
+        syncBodyModalState();
+    }
+
+    function closeAllModals() {
+        resetLoaderState();
+        categoryModal.hidden = true;
+        syncBodyModalState();
+    }
+
+    function openCategoryModal(categoryId) {
+        const category = metricCatalog[categoryId];
+        if (!category) {
+            return;
+        }
+
+        resetLoaderState();
+        categoryModalTitle.textContent = category.title;
+        categoryModalDescription.textContent = category.description;
+        categoryModalMetrics.innerHTML = "";
+
+        category.metrics.forEach((metric) => {
+            const item = document.createElement("li");
+            item.textContent = metric;
+            categoryModalMetrics.appendChild(item);
+        });
+
+        categoryModal.hidden = false;
+        syncBodyModalState();
+    }
+
+    closeAllModals();
+
+    auditForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const url = auditUrlInput.value.trim();
+        if (!url) {
+            auditUrlInput.focus();
+            return;
+        }
+
+        auditSubmitButton.disabled = true;
+        openLoader();
+
+        try {
+            const response = await fetch("/audits", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url })
+            });
+
+            if (!response.ok) {
+                let message = "Не удалось запустить аудит. Проверьте адрес сайта.";
+                try {
+                    const errorData = await response.json();
+                    message = errorData.detail || message;
+                } catch (parseError) {
+                    // ignore parse error
+                }
+                throw new Error(message);
+            }
+
+            const audit = await response.json();
+            finishLoader();
+            window.setTimeout(() => {
+                window.location.href = `/web/audits/${audit.id}`;
+            }, 350);
+        } catch (error) {
+            closeModal(auditLoader);
+            window.alert(error.message || "Не удалось выполнить аудит.");
+            auditSubmitButton.disabled = false;
+        }
+    });
+
+    categoryButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            openCategoryModal(button.dataset.categoryId);
+        });
+    });
+
+    categoryModalClose.addEventListener("click", () => {
+        closeModal(categoryModal);
+    });
+
+    categoryModal.addEventListener("click", (event) => {
+        if (event.target === categoryModal) {
+            closeModal(categoryModal);
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeAllModals();
+        }
+    });
+</script>
 {% endblock %}

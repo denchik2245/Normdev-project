@@ -12,6 +12,7 @@ from app.utils.helpers import (
     format_datetime,
     format_metric_value,
     get_category_label,
+    get_metric_catalog,
     get_metric_display_name,
     get_metric_severity,
     get_score_class,
@@ -51,6 +52,7 @@ def web_index(request: Request):
             "title": "Аудит сайтов",
             "error": None,
             "url_value": "",
+            "metric_catalog": get_metric_catalog(),
         }
     )
 
@@ -71,6 +73,7 @@ def web_create_audit(
                 "title": "Аудит сайтов",
                 "error": "Введите корректный URL сайта.",
                 "url_value": url,
+                "metric_catalog": get_metric_catalog(),
             },
             status_code=400
         )
@@ -87,6 +90,7 @@ def web_create_audit(
                 "title": "Аудит сайтов",
                 "error": result["error"],
                 "url_value": normalized_url,
+                "metric_catalog": get_metric_catalog(),
             },
             status_code=400
         )
