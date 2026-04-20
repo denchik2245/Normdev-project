@@ -104,8 +104,37 @@
         <div class="score">Итоговая оценка: {{ audit.total_score if audit.total_score is not none else "—" }}</div>
     </div>
 
-    <h2>Метрики</h2>
-    {% if audit.metrics %}
+    <h2>Оценки по категориям</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Категория</th>
+                <th>Оценка</th>
+                <th>Проблем</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>SEO</td>
+                <td>{{ category_scores["seo"] }}</td>
+                <td>{{ problematic_metrics_count["seo"] }}</td>
+            </tr>
+            <tr>
+                <td>Технические</td>
+                <td>{{ category_scores["technical"] }}</td>
+                <td>{{ problematic_metrics_count["technical"] }}</td>
+            </tr>
+            <tr>
+                <td>Производительность</td>
+                <td>{{ category_scores["performance"] }}</td>
+                <td>{{ problematic_metrics_count["performance"] }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% for category, title_text in [("seo", "SEO-метрики"), ("technical", "Технические метрики"), ("performance", "Метрики производительности")] %}
+    <h2>{{ title_text }}</h2>
+    {% if grouped_metrics[category] %}
     <table>
         <thead>
             <tr>
@@ -115,11 +144,12 @@
             </tr>
         </thead>
         <tbody>
-            {% for metric in audit.metrics %}
-            <tr>
-                <td>{{ metric.metric_name }}</td>
-                <td>{{ metric.metric_value }}</td>
-                <td>{{ metric.unit if metric.unit else "—" }}</td>
+            {% for metric in grouped_metrics[category] %}
+            {% set metric_severity = get_metric_severity(metric.metric_name, metric.metric_value) %}
+            <tr{% if metric_severity %} class="{{ metric_severity }}"{% endif %}>
+                <td{% if metric_severity %} class="{{ metric_severity }}"{% endif %}>{{ get_metric_display_name(metric.metric_name) }}</td>
+                <td{% if metric_severity %} class="{{ metric_severity }}"{% endif %}>{{ format_metric_value(metric.metric_name, metric.metric_value, metric.unit) }}</td>
+                <td{% if metric_severity %} class="{{ metric_severity }}"{% endif %}>{{ metric.unit if metric.unit else "—" }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -127,6 +157,7 @@
     {% else %}
     <p class="muted">Метрики отсутствуют.</p>
     {% endif %}
+    {% endfor %}
 
     <h2>Проблемы</h2>
     {% if audit.issues %}

@@ -214,6 +214,10 @@ button:hover {
     margin-bottom: 10px;
 }
 
+.summary-card .mini-score {
+    margin-top: 10px;
+}
+
 .summary-number {
     font-size: 34px;
     font-weight: bold;
@@ -227,9 +231,62 @@ button:hover {
     gap: 20px;
 }
 
+.category-card {
+    overflow: hidden;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.section-header h3 {
+    margin: 0 0 6px 0;
+}
+
+.section-subtitle {
+    margin: 0;
+    color: #667085;
+    font-size: 14px;
+}
+
 .metric-table td:first-child,
 .metric-table th:first-child {
     width: 45%;
+}
+
+.metric-row.low td,
+.metric-cell.low {
+    background: #eef6ff;
+}
+
+.metric-row.medium td,
+.metric-cell.medium {
+    background: #fff7e6;
+}
+
+.metric-row.high td,
+.metric-cell.high {
+    background: #fef1f1;
+}
+
+.metric-row.low td:first-child,
+.metric-cell.low:first-child {
+    border-left: 4px solid #60a5fa;
+}
+
+.metric-row.medium td:first-child,
+.metric-cell.medium:first-child {
+    border-left: 4px solid #f59e0b;
+}
+
+.metric-row.high td:first-child,
+.metric-cell.high:first-child {
+    border-left: 4px solid #ef4444;
 }
 
 @media (max-width: 900px) {

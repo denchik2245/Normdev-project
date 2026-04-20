@@ -43,45 +43,70 @@
             <h3>SEO</h3>
             <div class="summary-number">{{ seo_issues_count }}</div>
             <p>найдено проблем</p>
+            <div class="mini-score {{ get_score_class(category_scores['seo']) }}">
+                {{ category_scores["seo"] }} · {{ get_score_label(category_scores["seo"]) }}
+            </div>
         </div>
 
         <div class="summary-card">
-            <h3>Technical</h3>
+            <h3>Технические</h3>
             <div class="summary-number">{{ technical_issues_count }}</div>
             <p>найдено проблем</p>
+            <div class="mini-score {{ get_score_class(category_scores['technical']) }}">
+                {{ category_scores["technical"] }} · {{ get_score_label(category_scores["technical"]) }}
+            </div>
         </div>
 
         <div class="summary-card">
-            <h3>Performance</h3>
+            <h3>Производительность</h3>
             <div class="summary-number">{{ performance_issues_count }}</div>
             <p>найдено проблем</p>
+            <div class="mini-score {{ get_score_class(category_scores['performance']) }}">
+                {{ category_scores["performance"] }} · {{ get_score_label(category_scores["performance"]) }}
+            </div>
         </div>
     </div>
 
-    <div class="card">
-        <h3>Метрики</h3>
-        {% if audit.metrics %}
-            <table class="metric-table">
-                <thead>
-                    <tr>
-                        <th>Метрика</th>
-                        <th>Значение</th>
-                        <th>Ед.</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for metric in audit.metrics %}
-                    <tr>
-                        <td>{{ get_metric_display_name(metric.metric_name) }}</td>
-                        <td>{{ format_metric_value(metric.metric_name, metric.metric_value, metric.unit) }}</td>
-                        <td>{{ metric.unit if metric.unit else "—" }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p class="empty">Метрики отсутствуют.</p>
-        {% endif %}
+    <div class="category-section">
+        {% for category in ["seo", "technical", "performance"] %}
+        <div class="card category-card">
+            <div class="section-header">
+                <div>
+                    <h3>{{ get_category_label(category) }}: метрики</h3>
+                    <p class="section-subtitle">
+                        {{ grouped_metrics[category]|length }} метрик, {{ problematic_metrics_count[category] }} проблемных
+                    </p>
+                </div>
+                <div class="mini-score {{ get_score_class(category_scores[category]) }}">
+                    {{ category_scores[category] }} · {{ get_score_label(category_scores[category]) }}
+                </div>
+            </div>
+
+            {% if grouped_metrics[category] %}
+                <table class="metric-table">
+                    <thead>
+                        <tr>
+                            <th>Метрика</th>
+                            <th>Значение</th>
+                            <th>Ед.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for metric in grouped_metrics[category] %}
+                        {% set metric_severity = get_metric_severity(metric.metric_name, metric.metric_value) %}
+                        <tr class="metric-row{% if metric_severity %} {{ metric_severity }}{% endif %}">
+                            <td class="{% if metric_severity %}metric-cell {{ metric_severity }}{% endif %}">{{ get_metric_display_name(metric.metric_name) }}</td>
+                            <td class="{% if metric_severity %}metric-cell {{ metric_severity }}{% endif %}">{{ format_metric_value(metric.metric_name, metric.metric_value, metric.unit) }}</td>
+                            <td class="{% if metric_severity %}metric-cell {{ metric_severity }}{% endif %}">{{ metric.unit if metric.unit else "—" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="empty">Метрики в этой категории отсутствуют.</p>
+            {% endif %}
+        </div>
+        {% endfor %}
     </div>
 
     <div class="category-section">
@@ -104,7 +129,7 @@
         </div>
 
         <div class="card">
-            <h3>Technical-проблемы</h3>
+            <h3>Технические проблемы</h3>
             {% if grouped_issues["technical"] %}
                 {% for issue in grouped_issues["technical"] %}
                 <div class="issue {{ issue.severity }}">
@@ -122,7 +147,7 @@
         </div>
 
         <div class="card">
-            <h3>Performance-проблемы</h3>
+            <h3>Проблемы производительности</h3>
             {% if grouped_issues["performance"] %}
                 {% for issue in grouped_issues["performance"] %}
                 <div class="issue {{ issue.severity }}">

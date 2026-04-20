@@ -7,12 +7,17 @@ from app.dependencies import get_db
 from app.repositories.audit_repository import AuditRepository
 from app.services.audit_service import AuditService
 from app.utils.helpers import (
+    calculate_category_score,
+    count_problematic_metrics,
     format_datetime,
     format_metric_value,
+    get_category_label,
     get_metric_display_name,
+    get_metric_severity,
     get_score_class,
     get_score_label,
     get_status_label,
+    group_metrics_by_category,
 )
 from app.utils.validators import normalize_url
 
@@ -110,6 +115,17 @@ def web_audit_detail(
         )
 
     grouped_issues = group_issues_by_category(audit.issues)
+    grouped_metrics = group_metrics_by_category(audit.metrics)
+    category_scores = {
+        "seo": calculate_category_score(grouped_issues.get("seo", [])),
+        "technical": calculate_category_score(grouped_issues.get("technical", [])),
+        "performance": calculate_category_score(grouped_issues.get("performance", [])),
+    }
+    problematic_metrics_count = {
+        "seo": count_problematic_metrics(grouped_metrics.get("seo", [])),
+        "technical": count_problematic_metrics(grouped_metrics.get("technical", [])),
+        "performance": count_problematic_metrics(grouped_metrics.get("performance", [])),
+    }
 
     return templates.TemplateResponse(
         request=request,
@@ -118,10 +134,15 @@ def web_audit_detail(
             "title": f"Аудит #{audit_id}",
             "audit": audit,
             "grouped_issues": grouped_issues,
+            "grouped_metrics": grouped_metrics,
+            "category_scores": category_scores,
+            "problematic_metrics_count": problematic_metrics_count,
             "seo_issues_count": len(grouped_issues.get("seo", [])),
             "technical_issues_count": len(grouped_issues.get("technical", [])),
             "performance_issues_count": len(grouped_issues.get("performance", [])),
+            "get_category_label": get_category_label,
             "get_metric_display_name": get_metric_display_name,
+            "get_metric_severity": get_metric_severity,
             "format_metric_value": format_metric_value,
             "get_score_label": get_score_label,
             "get_score_class": get_score_class,
