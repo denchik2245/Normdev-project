@@ -1,176 +1,185 @@
 {% extends "base.html" %}
 
+{% block body_class %}audit-page{% endblock %}
+
+{% block header %}
+<header class="audit-header home-header">
+    <div class="home-header__inner">
+        <a href="/web" class="home-logo" aria-label="Normdev">
+            <svg width="45" height="30" viewBox="0 0 45 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <g clip-path="url(#audit-logo-clip)">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.621094 0.225643V10.1748H2.16434V4.22445C2.16434 2.38494 3.17514 1.38972 4.7374 1.38972C6.20751 1.38972 6.79556 2.38494 6.79556 4.22445V10.1748H8.33881V3.77316C8.33881 1.67065 7.27243 0 5.04898 0C3.70759 0 2.56808 0.600717 2.07219 1.93365L2.0166 0.225643H0.621094ZM17.4418 1.71548L14.0642 7.65989C13.6926 7.04124 13.4966 6.20741 13.4966 5.19875C13.4966 2.89002 14.525 1.5003 16.3271 1.5003C16.7411 1.5003 17.1141 1.57352 17.4433 1.71399L17.4418 1.71548ZM15.0706 8.61775C15.4334 8.80155 15.8532 8.89719 16.3257 8.89719C18.1264 8.89719 19.1562 7.50747 19.1562 5.19875C19.1562 4.10789 18.9265 3.22325 18.4935 2.59115L15.0706 8.61626V8.61775ZM16.3257 10.4005C19.0275 10.4005 20.7726 8.35475 20.7726 5.20024C20.7726 2.04573 19.0275 0 16.3257 0C13.6239 0 11.8788 2.04573 11.8788 5.20024C11.8788 8.35475 13.6239 10.4005 16.3257 10.4005ZM28.1173 0.225643H24.4047V1.61536H26.9412V8.78661H24.4047V10.1763H31.6631V8.78661H28.4844V4.24387C28.4844 2.53586 29.1822 1.61536 30.6713 1.61536H32.6198V0.225643H30.6713C29.3855 0.225643 28.5941 0.82636 28.246 2.10251L28.1173 0.225643ZM35.5892 0.225643V10.1748H37.1515V4.20502C37.1515 2.40287 37.6108 1.38972 38.3642 1.38972C39.2097 1.38972 39.5212 2.19665 39.5212 4.20502V10.1748H41.0645V4.20502C41.0645 2.40287 41.5604 1.38972 42.4059 1.38972C43.1592 1.38972 43.4532 2.17872 43.4532 4.20502V10.1748H44.9965V4.20502C44.9965 1.27615 44.3528 0 42.8652 0C41.8544 0 41.0645 0.712791 40.7149 1.85894C40.4209 0.563359 39.906 0 39.0605 0C38.0862 0 37.4251 0.563359 37.0579 1.59594L37.0023 0.225643H35.5878H35.5892Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.63635 14.3815H7.0931V19.0752C6.54162 18.0799 5.54985 17.536 4.09729 17.536C1.2858 17.536 0 19.9957 0 22.7363C0 25.4768 1.2858 27.9365 4.09729 27.9365C5.60397 27.9365 6.65133 27.3163 7.18379 26.2853L7.23938 27.7123H8.63635V14.3845V14.3815ZM1.61639 22.7348C1.61639 20.7637 2.4063 18.9616 4.42788 18.9616C6.44947 18.9616 7.23938 20.8011 7.23938 22.7348C7.23938 24.6684 6.43045 26.4332 4.42788 26.4332C2.42532 26.4332 1.61639 24.6311 1.61639 22.7348Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2695 22.7346C12.2695 25.8877 14.0337 27.9349 16.7354 27.9349C18.6093 27.9349 20.2447 26.7708 20.8152 24.8939L19.1608 24.7624C18.7205 25.8129 17.7828 26.4331 16.7354 26.4331C15.0635 26.4331 14.0527 25.2511 13.924 23.2233H20.9805L20.9615 22.5105C20.7962 18.9809 18.8843 17.5359 16.7354 17.5359C14.0337 17.5359 12.2695 19.5816 12.2695 22.7361V22.7346ZM13.9415 21.8336C14.199 20.0688 15.1907 19.0362 16.734 19.0362C17.9291 19.0362 19.013 19.749 19.288 21.8336H13.94H13.9415Z" fill="white"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M33.044 17.76H31.391L28.5239 26.058L25.6569 17.76H24.0039L27.5497 27.7092H29.4982L33.044 17.76Z" fill="white"/>
+                    <path d="M44.7834 28.5356H36.1836V30.0001H44.7834V28.5356Z" fill="#47F031"/>
+                </g>
+                <defs>
+                    <clipPath id="audit-logo-clip">
+                        <rect width="45" height="30" fill="white"/>
+                    </clipPath>
+                </defs>
+            </svg>
+        </a>
+
+        <nav class="home-nav" aria-label="Основное меню">
+            <a href="/web/history">История проверок</a>
+            <a href="/docs">Swagger API</a>
+        </nav>
+
+        <a href="/web" class="home-header__cta">Начать проверку</a>
+    </div>
+</header>
+{% endblock %}
+
+{% block main_wrapper_class %}{% endblock %}
+
+{% block main_class %}audit-main{% endblock %}
+
 {% block content %}
 {% if audit %}
-    <div class="card">
-        <div class="action-row top-actions">
-            <a class="link-button" href="/web">Новый аудит</a>
-            <a class="link-button secondary" href="/web/history">Назад к истории</a>
-        </div>
+    <section class="audit-shell">
+        <h1 class="audit-title">Результат аудита</h1>
 
-        <div class="top-row">
-            <div>
-                <h2>Результат аудита #{{ audit.id }}</h2>
-                <p><strong>URL:</strong> {{ audit.url }}</p>
-                <p>
-                    <strong>Статус:</strong>
-                    <span class="badge {{ audit.status }}">{{ get_status_label(audit.status) }}</span>
-                </p>
-                <p><strong>Дата создания:</strong> {{ format_datetime(audit.created_at) }}</p>
-                <p><strong>Дата завершения:</strong> {{ format_datetime(audit.finished_at) }}</p>
-            </div>
+        <section class="audit-top-stack">
+            <section class="audit-toolbar">
+                <a href="/web/history" class="audit-toolbar__back">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M12.5 5L7.5 10L12.5 15" stroke="#AEB2BC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Назад к истории</span>
+                </a>
 
-            <div class="score-box {{ get_score_class(audit.total_score) }}">
-                <div class="score">
-                    {{ audit.total_score if audit.total_score is not none else "—" }}
+                <div class="audit-toolbar__meta">
+                    <a
+                        href="{{ audit.url }}"
+                        class="audit-toolbar__meta-item audit-toolbar__meta-item--url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {{ audit.url }}
+                    </a>
+                    <span class="audit-toolbar__meta-item">{{ format_datetime(audit.created_at) }}</span>
                 </div>
-                <p><strong>{{ get_score_label(audit.total_score) }}</strong></p>
-                <p>Итоговая оценка сайта</p>
+            </section>
 
-                {% if audit.reports %}
+            <section class="audit-summary-grid">
+                <article class="audit-summary-card">
+                    <h2>SEO</h2>
+                    <div class="audit-summary-card__value">{{ seo_issues_count }}</div>
+                    <p>Проблемы найдено</p>
+                </article>
+                <article class="audit-summary-card">
+                    <h2>Technical</h2>
+                    <div class="audit-summary-card__value">{{ technical_issues_count }}</div>
+                    <p>Проблемы найдено</p>
+                </article>
+                <article class="audit-summary-card">
+                    <h2>Performance</h2>
+                    <div class="audit-summary-card__value">{{ performance_issues_count }}</div>
+                    <p>Проблемы найдено</p>
+                </article>
+                <article class="audit-summary-card audit-summary-card--total {{ get_score_class(audit.total_score) }}">
+                    <h2>Итоговая оценка</h2>
+                    <div class="audit-summary-card__value">{{ audit.total_score if audit.total_score is not none else "—" }}</div>
                     <p>
-                        <a href="/audits/{{ audit.id }}/report">
-                            <button type="button">Скачать PDF-отчет</button>
-                        </a>
+                        {% if audit.total_score is none %}
+                            Ошибка
+                        {% elif audit.total_score >= 90 %}
+                            Отлично
+                        {% elif audit.total_score >= 75 %}
+                            Хорошо
+                        {% elif audit.total_score >= 50 %}
+                            Средне
+                        {% else %}
+                            Плохо
+                        {% endif %}
                     </p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+                </article>
+            </section>
 
-    <div class="summary-grid">
-        <div class="summary-card">
-            <h3>SEO</h3>
-            <div class="summary-number">{{ seo_issues_count }}</div>
-            <p>найдено проблем</p>
-            <div class="mini-score {{ get_score_class(category_scores['seo']) }}">
-                {{ category_scores["seo"] }} · {{ get_score_label(category_scores["seo"]) }}
-            </div>
-        </div>
+            {% if audit.reports %}
+                <a href="/audits/{{ audit.id }}/report" class="audit-download-button">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M10 3.33337V11.6667" stroke="#1C2630" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M6.66663 8.75L9.99996 12.0834L13.3333 8.75" stroke="#1C2630" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4.16663 15H15.8333" stroke="#1C2630" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                    <span>Скачать PDF-отчет</span>
+                </a>
+            {% endif %}
+        </section>
 
-        <div class="summary-card">
-            <h3>Технические</h3>
-            <div class="summary-number">{{ technical_issues_count }}</div>
-            <p>найдено проблем</p>
-            <div class="mini-score {{ get_score_class(category_scores['technical']) }}">
-                {{ category_scores["technical"] }} · {{ get_score_label(category_scores["technical"]) }}
-            </div>
-        </div>
+        <section class="audit-metrics-stack">
+            {% for category in ["seo", "technical", "performance"] %}
+                <section class="audit-metric-panel">
+                    <h2 class="audit-metric-panel__title">{{ get_category_label(category) }}-метрики</h2>
 
-        <div class="summary-card">
-            <h3>Производительность</h3>
-            <div class="summary-number">{{ performance_issues_count }}</div>
-            <p>найдено проблем</p>
-            <div class="mini-score {{ get_score_class(category_scores['performance']) }}">
-                {{ category_scores["performance"] }} · {{ get_score_label(category_scores["performance"]) }}
-            </div>
-        </div>
-    </div>
+                    {% if grouped_metrics[category] %}
+                        <div class="audit-metric-table">
+                            <div class="audit-metric-table__head">
+                                <span>Метрика</span>
+                                <span>Значение</span>
+                                <span>Оценка</span>
+                            </div>
 
-    <div class="category-section">
+                            <div class="audit-metric-table__body">
+                                {% for metric in grouped_metrics[category] %}
+                                    {% set metric_severity = get_metric_severity(metric.metric_name, metric.metric_value) %}
+                                    <div class="audit-metric-row">
+                                        <span class="audit-metric-row__name">{{ get_metric_display_name(metric.metric_name) }}</span>
+                                        <span class="audit-metric-row__value">{{ format_metric_value(metric.metric_name, metric.metric_value, metric.unit) }}</span>
+                                        <span class="audit-grade-pill audit-grade-pill--{{ metric_severity if metric_severity else 'excellent' }}">
+                                            {% if metric_severity == "high" %}
+                                                Плохо
+                                            {% elif metric_severity == "medium" %}
+                                                Средне
+                                            {% elif metric_severity == "low" %}
+                                                Хорошо
+                                            {% else %}
+                                                Отлично
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="audit-empty-state">Метрики в этой категории отсутствуют.</p>
+                    {% endif %}
+                </section>
+            {% endfor %}
+        </section>
+
         {% for category in ["seo", "technical", "performance"] %}
-        <div class="card category-card">
-            <div class="section-header">
-                <div>
-                    <h3>{{ get_category_label(category) }}: метрики</h3>
-                    <p class="section-subtitle">
-                        {{ grouped_metrics[category]|length }} метрик, {{ problematic_metrics_count[category] }} проблемных
-                    </p>
-                </div>
-                <div class="mini-score {{ get_score_class(category_scores[category]) }}">
-                    {{ category_scores[category] }} · {{ get_score_label(category_scores[category]) }}
-                </div>
-            </div>
-
-            {% if grouped_metrics[category] %}
-                <table class="metric-table">
-                    <thead>
-                        <tr>
-                            <th>Метрика</th>
-                            <th>Значение</th>
-                            <th>Ед.</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for metric in grouped_metrics[category] %}
-                        {% set metric_severity = get_metric_severity(metric.metric_name, metric.metric_value) %}
-                        <tr class="metric-row{% if metric_severity %} {{ metric_severity }}{% endif %}">
-                            <td class="{% if metric_severity %}metric-cell {{ metric_severity }}{% endif %}">{{ get_metric_display_name(metric.metric_name) }}</td>
-                            <td class="{% if metric_severity %}metric-cell {{ metric_severity }}{% endif %}">{{ format_metric_value(metric.metric_name, metric.metric_value, metric.unit) }}</td>
-                            <td class="{% if metric_severity %}metric-cell {{ metric_severity }}{% endif %}">{{ metric.unit if metric.unit else "—" }}</td>
-                        </tr>
+            {% if grouped_issues[category] %}
+                <section class="audit-metric-panel audit-metric-panel--issues">
+                    <h2 class="audit-metric-panel__title">{{ get_category_label(category) }}-проблемы</h2>
+                    <div class="audit-issues-list">
+                        {% for issue in grouped_issues[category] %}
+                            <article class="audit-issue-card">
+                                <div class="audit-issue-card__head">
+                                    <h3>{{ issue.title }}</h3>
+                                    <span class="audit-grade-pill audit-grade-pill--{{ issue.severity }}">{{ issue.severity|capitalize }}</span>
+                                </div>
+                                <p>{{ issue.description }}</p>
+                                {% if issue.recommendation %}
+                                    <p class="audit-issue-card__recommendation">{{ issue.recommendation }}</p>
+                                {% endif %}
+                            </article>
                         {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p class="empty">Метрики в этой категории отсутствуют.</p>
+                    </div>
+                </section>
             {% endif %}
-        </div>
         {% endfor %}
-    </div>
-
-    <div class="category-section">
-        <div class="card">
-            <h3>SEO-проблемы</h3>
-            {% if grouped_issues["seo"] %}
-                {% for issue in grouped_issues["seo"] %}
-                <div class="issue {{ issue.severity }}">
-                    <h4>{{ issue.title }}</h4>
-                    <div class="issue-meta">
-                        Важность: {{ issue.severity }}
-                    </div>
-                    <p>{{ issue.description }}</p>
-                    <p><strong>Рекомендация:</strong> {{ issue.recommendation if issue.recommendation else "—" }}</p>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p class="empty">SEO-проблемы не обнаружены.</p>
-            {% endif %}
-        </div>
-
-        <div class="card">
-            <h3>Технические проблемы</h3>
-            {% if grouped_issues["technical"] %}
-                {% for issue in grouped_issues["technical"] %}
-                <div class="issue {{ issue.severity }}">
-                    <h4>{{ issue.title }}</h4>
-                    <div class="issue-meta">
-                        Важность: {{ issue.severity }}
-                    </div>
-                    <p>{{ issue.description }}</p>
-                    <p><strong>Рекомендация:</strong> {{ issue.recommendation if issue.recommendation else "—" }}</p>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p class="empty">Technical-проблемы не обнаружены.</p>
-            {% endif %}
-        </div>
-
-        <div class="card">
-            <h3>Проблемы производительности</h3>
-            {% if grouped_issues["performance"] %}
-                {% for issue in grouped_issues["performance"] %}
-                <div class="issue {{ issue.severity }}">
-                    <h4>{{ issue.title }}</h4>
-                    <div class="issue-meta">
-                        Важность: {{ issue.severity }}
-                    </div>
-                    <p>{{ issue.description }}</p>
-                    <p><strong>Рекомендация:</strong> {{ issue.recommendation if issue.recommendation else "—" }}</p>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p class="empty">Performance-проблемы не обнаружены.</p>
-            {% endif %}
-        </div>
-    </div>
+    </section>
 {% else %}
-    <div class="card">
-        <h2>Аудит не найден</h2>
-        <p>Запись с указанным идентификатором отсутствует.</p>
-        <div class="action-row">
-            <a class="link-button" href="/web">На главную</a>
-        </div>
-    </div>
+    <section class="audit-shell audit-shell--empty">
+        <h1 class="audit-title">Аудит не найден</h1>
+        <section class="audit-metric-panel">
+            <p class="audit-empty-state">Запись с указанным идентификатором отсутствует.</p>
+            <a href="/web" class="audit-download-button audit-download-button--inline">На главную</a>
+        </section>
+    </section>
 {% endif %}
 {% endblock %}

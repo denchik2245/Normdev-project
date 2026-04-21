@@ -26,5 +26,37 @@
     <main class="{% block main_wrapper_class %}container{% endblock %} {% block main_class %}{% endblock %}">
         {% block content %}{% endblock %}
     </main>
+    <script>
+        (function () {
+            const stickyHeaders = document.querySelectorAll(".history-page header.history-header, .audit-page header.audit-header");
+            if (!stickyHeaders.length) {
+                return;
+            }
+
+            let ticking = false;
+
+            function updateStickyHeaderShadow() {
+                const progress = Math.min(window.scrollY / 40, 1);
+
+                stickyHeaders.forEach((header) => {
+                    header.style.setProperty("--sticky-shadow-opacity", progress.toFixed(3));
+                });
+
+                ticking = false;
+            }
+
+            function requestShadowUpdate() {
+                if (ticking) {
+                    return;
+                }
+
+                ticking = true;
+                window.requestAnimationFrame(updateStickyHeaderShadow);
+            }
+
+            updateStickyHeaderShadow();
+            window.addEventListener("scroll", requestShadowUpdate, { passive: true });
+        })();
+    </script>
 </body>
 </html>
