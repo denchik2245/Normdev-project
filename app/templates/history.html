@@ -50,7 +50,18 @@
             <span>URL</span>
             <span>Состояние</span>
             <span>Дата</span>
-            <span class="history-panel__actions-label"></span>
+            <form method="post" action="/web/history/delete-selected" class="history-panel__actions-label history-delete-selected-form" id="history-delete-selected-form" onsubmit="return confirm('Удалить выбранные проверки из истории?');">
+                <button type="submit" class="history-delete-selected-button">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M5.83337 7.49996V14.1666C5.83337 15.0871 6.57957 15.8333 7.50004 15.8333H12.5C13.4205 15.8333 14.1667 15.0871 14.1667 14.1666V7.49996" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4.16663 5.83329H15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8.33337 9.16663V12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M11.6666 9.16663V12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M7.5 5.83329V4.99996C7.5 4.53972 7.8731 4.16663 8.33333 4.16663H11.6667C12.1269 4.16663 12.5 4.53972 12.5 4.99996V5.83329" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Удалить выбранные</span>
+                </button>
+            </form>
         </div>
 
         {% if audits %}
@@ -107,6 +118,29 @@
 <script>
     const selectAllAuditsCheckbox = document.getElementById("select-all-audits");
     const auditCheckboxes = Array.from(document.querySelectorAll(".audit-select-checkbox"));
+    const deleteSelectedForm = document.getElementById("history-delete-selected-form");
+
+    function syncDeleteSelectedState() {
+        if (!deleteSelectedForm) {
+            return;
+        }
+
+        const selectedIds = auditCheckboxes
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+        deleteSelectedForm.querySelectorAll('input[name="audit_ids"]').forEach((input) => input.remove());
+
+        selectedIds.forEach((auditId) => {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "audit_ids";
+            input.value = auditId;
+            deleteSelectedForm.appendChild(input);
+        });
+
+        deleteSelectedForm.classList.toggle("is-visible", selectedIds.length > 0);
+    }
 
     function syncSelectAllState() {
         if (!selectAllAuditsCheckbox || auditCheckboxes.length === 0) {
@@ -116,6 +150,7 @@
         const checkedCount = auditCheckboxes.filter((checkbox) => checkbox.checked).length;
         selectAllAuditsCheckbox.checked = checkedCount === auditCheckboxes.length;
         selectAllAuditsCheckbox.indeterminate = checkedCount > 0 && checkedCount < auditCheckboxes.length;
+        syncDeleteSelectedState();
     }
 
     if (selectAllAuditsCheckbox) {
