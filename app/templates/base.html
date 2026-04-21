@@ -28,34 +28,114 @@
     </main>
     <script>
         (function () {
-            const stickyHeaders = document.querySelectorAll(".history-page header.history-header, .audit-page header.audit-header");
-            if (!stickyHeaders.length) {
+            const root = document.documentElement;
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+            if (!prefersReducedMotion) {
+                root.classList.add("page-enter");
+
+                window.requestAnimationFrame(() => {
+                    window.requestAnimationFrame(() => {
+                        root.classList.remove("page-enter");
+                    });
+                });
+
+                document.addEventListener("click", (event) => {
+                    if (!(event.target instanceof Element)) {
+                        return;
+                    }
+
+                    const link = event.target.closest("a[href]");
+                    if (!link) {
+                        return;
+                    }
+
+                    if (
+                        event.defaultPrevented ||
+                        event.button !== 0 ||
+                        event.metaKey ||
+                        event.ctrlKey ||
+                        event.shiftKey ||
+                        event.altKey ||
+                        link.target === "_blank" ||
+                        link.hasAttribute("download")
+                    ) {
+                        return;
+                    }
+
+                    const url = new URL(link.href, window.location.href);
+                    const isSameOrigin = url.origin === window.location.origin;
+                    const isHashOnlyNavigation =
+                        url.pathname === window.location.pathname &&
+                        url.search === window.location.search &&
+                        url.hash &&
+                        url.hash !== window.location.hash;
+
+                    if (!isSameOrigin || isHashOnlyNavigation) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    root.classList.add("page-leave");
+
+                    window.setTimeout(() => {
+                        window.location.href = url.href;
+                    }, 220);
+                });
+
+                window.addEventListener("pageshow", () => {
+                    root.classList.remove("page-leave");
+                });
+            }
+
+            const animatedHeaders = document.querySelectorAll(".home-header, .history-page header.history-header, .audit-page header.audit-header");
+            if (!animatedHeaders.length) {
                 return;
             }
 
             let ticking = false;
+            let lastScrollY = window.scrollY;
 
-            function updateStickyHeaderShadow() {
-                const progress = Math.min(window.scrollY / 40, 1);
+            function updateHeaderState() {
+                const currentScrollY = window.scrollY;
+                const progress = Math.min(currentScrollY / 40, 1);
+                const scrollingDown = currentScrollY > lastScrollY;
+                const scrollDelta = Math.abs(currentScrollY - lastScrollY);
 
-                stickyHeaders.forEach((header) => {
+                animatedHeaders.forEach((header) => {
                     header.style.setProperty("--sticky-shadow-opacity", progress.toFixed(3));
+
+                    if (currentScrollY <= 24) {
+                        header.classList.remove("header-hidden");
+                        return;
+                    }
+
+                    if (scrollDelta < 8) {
+                        return;
+                    }
+
+                    if (scrollingDown) {
+                        header.classList.add("header-hidden");
+                    } else {
+                        header.classList.remove("header-hidden");
+                    }
                 });
 
+                lastScrollY = currentScrollY;
                 ticking = false;
             }
 
-            function requestShadowUpdate() {
+            function requestHeaderUpdate() {
                 if (ticking) {
                     return;
                 }
 
                 ticking = true;
-                window.requestAnimationFrame(updateStickyHeaderShadow);
+                window.requestAnimationFrame(updateHeaderState);
             }
 
-            updateStickyHeaderShadow();
-            window.addEventListener("scroll", requestShadowUpdate, { passive: true });
+            updateHeaderState();
+            window.addEventListener("scroll", requestHeaderUpdate, { passive: true });
         })();
     </script>
 </body>

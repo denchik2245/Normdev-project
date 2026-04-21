@@ -56,9 +56,9 @@
         {% if audits %}
             <div class="history-list">
                 {% for audit in audits %}
-                    {% set score_class = get_score_class(audit.total_score) %}
-                    {% set display_label = "Ошибка" if audit.total_score is none else ("Отлично" if audit.total_score >= 90 else "Хорошо" if audit.total_score >= 75 else "Средне" if audit.total_score >= 50 else "Плохо") %}
-                    {% set display_score = audit.total_score | int if audit.total_score is not none else "-" %}
+                    {% set score_class = get_score_class(audit.total_score, audit.status) %}
+                    {% set display_label = get_score_label(audit.total_score, audit.status) %}
+                    {% set display_score = "-" if audit.status == "failed" or audit.total_score is none else audit.total_score | int %}
                     <div class="history-row">
                         <label class="history-checkbox">
                             <input

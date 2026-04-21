@@ -79,22 +79,13 @@
                     <div class="audit-summary-card__value">{{ performance_issues_count }}</div>
                     <p>Проблемы найдено</p>
                 </article>
-                <article class="audit-summary-card audit-summary-card--total {{ get_score_class(audit.total_score) }}">
+                {% set total_score_class = get_score_class(audit.total_score, audit.status) %}
+                {% set total_score_label = get_score_label(audit.total_score, audit.status) %}
+                {% set total_score_value = "-" if audit.status == "failed" or audit.total_score is none else audit.total_score %}
+                <article class="audit-summary-card audit-summary-card--total {{ total_score_class }}">
                     <h2>Итоговая оценка</h2>
-                    <div class="audit-summary-card__value">{{ audit.total_score if audit.total_score is not none else "—" }}</div>
-                    <p>
-                        {% if audit.total_score is none %}
-                            Ошибка
-                        {% elif audit.total_score >= 90 %}
-                            Отлично
-                        {% elif audit.total_score >= 75 %}
-                            Хорошо
-                        {% elif audit.total_score >= 50 %}
-                            Средне
-                        {% else %}
-                            Плохо
-                        {% endif %}
-                    </p>
+                    <div class="audit-summary-card__value">{{ total_score_value }}</div>
+                    <p>{{ total_score_label }}</p>
                 </article>
             </section>
 

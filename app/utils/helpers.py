@@ -549,35 +549,40 @@ def format_metric_value(metric_name: str, metric_value: float, unit: str | None)
     if metric_name in boolean_metrics:
         return "Да" if metric_value == 1 else "Нет"
 
+    def format_number(value: float) -> str:
+        if value.is_integer():
+            return str(int(value))
+        return f"{value:.2f}"
+
     if unit == "ms":
-        return f"{metric_value:.2f}"
+        return f"{metric_value:.2f} мс"
     if unit == "bytes":
-        return f"{int(metric_value)}"
+        return f"{int(metric_value)} байт"
     if unit == "chars":
-        return f"{int(metric_value)}"
+        return f"{int(metric_value)} символов"
     if unit in {"percent", "%"}:
-        return f"{metric_value:.2f}"
+        return f"{metric_value:.2f} %"
 
-    if metric_value.is_integer():
-        return str(int(metric_value))
+    if unit:
+        return f"{format_number(metric_value)} {unit}"
 
-    return f"{metric_value:.2f}"
+    return format_number(metric_value)
 
 
-def get_score_label(score: float | None) -> str:
-    if score is None:
-        return "Нет оценки"
+def get_score_label(score: float | None, status: str | None = None) -> str:
+    if status == "failed" or score is None:
+        return "Ошибка"
     if score >= 90:
         return "Отлично"
     if score >= 75:
         return "Хорошо"
     if score >= 50:
-        return "Удовлетворительно"
+        return "Средне"
     return "Плохо"
 
 
-def get_score_class(score: float | None) -> str:
-    if score is None:
+def get_score_class(score: float | None, status: str | None = None) -> str:
+    if status == "failed" or score is None:
         return "score-none"
     if score >= 90:
         return "score-excellent"
