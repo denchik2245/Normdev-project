@@ -1,7 +1,6 @@
 from app.repositories.audit_repository import AuditRepository
 from app.services.page_loader import PageLoader, PageLoaderError
 from app.services.performance_analyzer import PerformanceAnalyzer
-from app.services.report_service import ReportService
 from app.services.score_calculator import ScoreCalculator
 from app.services.seo_analyzer import SEOAnalyzer
 from app.services.technical_analyzer import TechnicalAnalyzer
@@ -15,7 +14,6 @@ class AuditService:
         self.technical_analyzer = TechnicalAnalyzer()
         self.performance_analyzer = PerformanceAnalyzer()
         self.score_calculator = ScoreCalculator()
-        self.report_service = ReportService()
 
     def run_initial_audit(self, url: str):
         audit = self.repository.create_audit(url=url, status="running")
@@ -123,13 +121,6 @@ class AuditService:
                 status="completed",
                 total_score=total_score,
                 finished=True
-            )
-
-            full_audit = self.repository.get_audit_by_id(audit.id)
-            report_path = self.report_service.generate_audit_report(full_audit)
-            self.repository.add_report(
-                audit_id=audit.id,
-                file_path=report_path
             )
 
             return {

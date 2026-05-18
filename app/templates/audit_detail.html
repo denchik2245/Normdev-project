@@ -89,7 +89,7 @@
                 </article>
             </section>
 
-            {% if audit.reports %}
+            {% if audit.status == "completed" %}
                 <a href="/audits/{{ audit.id }}/report" class="audit-download-button">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M10 3.33337V11.6667" stroke="#1C2630" stroke-width="1.8" stroke-linecap="round"/>
@@ -104,7 +104,14 @@
         <section class="audit-metrics-stack">
             {% for category in ["seo", "technical", "performance"] %}
                 <section class="audit-metric-panel">
-                    <h2 class="audit-metric-panel__title">{{ get_category_label(category) }}-метрики</h2>
+                    {% set category_score = category_scores[category] %}
+                    {% set category_score_class = get_score_class(category_score) %}
+                    <div class="audit-metric-panel__head">
+                        <h2 class="audit-metric-panel__title">{{ get_category_label(category) }}-метрики</h2>
+                        <div class="audit-category-score {{ category_score_class }}">
+                            {{ category_score }}
+                        </div>
+                    </div>
 
                     {% if grouped_metrics[category] %}
                         <div class="audit-metric-table">
@@ -142,27 +149,36 @@
             {% endfor %}
         </section>
 
-        {% for category in ["seo", "technical", "performance"] %}
-            {% if grouped_issues[category] %}
-                <section class="audit-metric-panel audit-metric-panel--issues">
-                    <h2 class="audit-metric-panel__title">{{ get_category_label(category) }}-проблемы</h2>
-                    <div class="audit-issues-list">
-                        {% for issue in grouped_issues[category] %}
-                            <article class="audit-issue-card">
-                                <div class="audit-issue-card__head">
-                                    <h3>{{ issue.title }}</h3>
-                                    <span class="audit-grade-pill audit-grade-pill--{{ issue.severity }}">{{ issue.severity|capitalize }}</span>
-                                </div>
-                                <p>{{ issue.description }}</p>
-                                {% if issue.recommendation %}
-                                    <p class="audit-issue-card__recommendation">{{ issue.recommendation }}</p>
-                                {% endif %}
-                            </article>
-                        {% endfor %}
-                    </div>
-                </section>
-            {% endif %}
-        {% endfor %}
+        {% if seo_issues_count + technical_issues_count + performance_issues_count > 0 %}
+            <section class="audit-issues-stack">
+                {% for category in ["seo", "technical", "performance"] %}
+                    {% if grouped_issues[category] %}
+                        <details class="audit-metric-panel audit-metric-panel--issues">
+                            <summary class="audit-accordion-summary">
+                                <h2 class="audit-metric-panel__title">{{ get_category_label(category) }}-проблемы</h2>
+                                <span class="audit-accordion-summary__icon" aria-hidden="true"></span>
+                            </summary>
+                            <div class="audit-issues-list">
+                                {% for issue in grouped_issues[category] %}
+                                    <article class="audit-issue-card">
+                                        <div class="audit-issue-card__head">
+                                            <h3>{{ issue.title }}</h3>
+                                            <span class="audit-grade-pill audit-grade-pill--{{ issue.severity }}">
+                                                {{ get_issue_severity_label(issue.severity) }}
+                                            </span>
+                                        </div>
+                                        <p>{{ issue.description }}</p>
+                                        {% if issue.recommendation %}
+                                            <p class="audit-issue-card__recommendation">{{ issue.recommendation }}</p>
+                                        {% endif %}
+                                    </article>
+                                {% endfor %}
+                            </div>
+                        </details>
+                    {% endif %}
+                {% endfor %}
+            </section>
+        {% endif %}
     </section>
 {% else %}
     <section class="audit-shell audit-shell--empty">

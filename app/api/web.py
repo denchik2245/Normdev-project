@@ -8,16 +8,17 @@ from app.repositories.audit_repository import AuditRepository
 from app.services.audit_service import AuditService
 from app.utils.helpers import (
     calculate_category_score,
-    count_problematic_metrics,
     format_datetime,
     format_metric_value,
     get_category_label,
+    get_issue_severity_label,
     get_metric_catalog,
     get_metric_display_name,
     get_metric_severity,
     get_score_class,
     get_score_label,
     get_status_label,
+    group_issues_by_category,
     group_metrics_by_category,
 )
 from app.utils.validators import normalize_url
@@ -25,22 +26,6 @@ from app.utils.validators import normalize_url
 router = APIRouter(tags=["Web"])
 
 templates = Jinja2Templates(directory="app/templates")
-
-
-def group_issues_by_category(issues):
-    grouped = {
-        "seo": [],
-        "technical": [],
-        "performance": [],
-    }
-
-    for issue in issues:
-        if issue.category in grouped:
-            grouped[issue.category].append(issue)
-        else:
-            grouped.setdefault(issue.category, []).append(issue)
-
-    return grouped
 
 
 @router.get("/web", response_class=HTMLResponse)
@@ -125,11 +110,6 @@ def web_audit_detail(
         "technical": calculate_category_score(grouped_issues.get("technical", [])),
         "performance": calculate_category_score(grouped_issues.get("performance", [])),
     }
-    problematic_metrics_count = {
-        "seo": count_problematic_metrics(grouped_metrics.get("seo", [])),
-        "technical": count_problematic_metrics(grouped_metrics.get("technical", [])),
-        "performance": count_problematic_metrics(grouped_metrics.get("performance", [])),
-    }
 
     return templates.TemplateResponse(
         request=request,
@@ -140,17 +120,16 @@ def web_audit_detail(
             "grouped_issues": grouped_issues,
             "grouped_metrics": grouped_metrics,
             "category_scores": category_scores,
-            "problematic_metrics_count": problematic_metrics_count,
             "seo_issues_count": len(grouped_issues.get("seo", [])),
             "technical_issues_count": len(grouped_issues.get("technical", [])),
             "performance_issues_count": len(grouped_issues.get("performance", [])),
             "get_category_label": get_category_label,
             "get_metric_display_name": get_metric_display_name,
             "get_metric_severity": get_metric_severity,
+            "get_issue_severity_label": get_issue_severity_label,
             "format_metric_value": format_metric_value,
             "get_score_label": get_score_label,
             "get_score_class": get_score_class,
-            "get_status_label": get_status_label,
             "format_datetime": format_datetime,
         }
     )

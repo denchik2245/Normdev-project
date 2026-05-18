@@ -80,24 +80,6 @@ class AuditRepository:
         self.db.refresh(issue)
         return issue
 
-    def add_report(self, audit_id: int, file_path: str) -> AuditReport:
-        report = AuditReport(
-            audit_id=audit_id,
-            file_path=file_path
-        )
-        self.db.add(report)
-        self.db.commit()
-        self.db.refresh(report)
-        return report
-
-    def get_latest_report_by_audit_id(self, audit_id: int) -> AuditReport | None:
-        return (
-            self.db.query(AuditReport)
-            .filter(AuditReport.audit_id == audit_id)
-            .order_by(AuditReport.generated_at.desc())
-            .first()
-        )
-
     def get_audits(self) -> list[Audit]:
         return (
             self.db.query(Audit)

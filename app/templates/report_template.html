@@ -165,7 +165,7 @@
         <div class="issue {{ issue.severity }}">
             <h3>{{ issue.title }}</h3>
             <p><strong>Категория:</strong> {{ issue.category }}</p>
-            <p><strong>Важность:</strong> {{ issue.severity }}</p>
+            <p><strong>Важность:</strong> {{ get_issue_severity_label(issue.severity) }}</p>
             <p><strong>Описание:</strong> {{ issue.description }}</p>
             <p><strong>Рекомендация:</strong> {{ issue.recommendation if issue.recommendation else "—" }}</p>
         </div>

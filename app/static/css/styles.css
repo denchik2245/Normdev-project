@@ -759,6 +759,14 @@ button:hover {
     margin-top: 100px;
 }
 
+.audit-issues-stack {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 100px;
+}
+
 .audit-toolbar {
     width: 100%;
     min-height: 76px;
@@ -980,6 +988,14 @@ button:hover {
     margin-top: 0;
 }
 
+.audit-metric-panel__head {
+    margin-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
 .audit-metric-panel__title {
     margin: 0 0 28px;
     color: var(--color-main-white);
@@ -988,6 +1004,92 @@ button:hover {
     font-weight: 500;
     line-height: 100%;
     text-transform: uppercase;
+}
+
+.audit-metric-panel__head .audit-metric-panel__title {
+    margin-bottom: 0;
+}
+
+.audit-category-score {
+    padding: 12px 16px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.audit-category-score.score-excellent {
+    background: #d9f7e8;
+    color: #2e7d4e;
+}
+
+.audit-category-score.score-good {
+    background: #e7f0ff;
+    color: #1d4ed8;
+}
+
+.audit-category-score.score-warning {
+    background: #fff4cc;
+    color: #946200;
+}
+
+.audit-category-score.score-bad {
+    background: #fde2e1;
+    color: #b42318;
+}
+
+.audit-metric-panel--issues {
+    overflow: hidden;
+}
+
+.audit-accordion-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.audit-accordion-summary::-webkit-details-marker {
+    display: none;
+}
+
+.audit-accordion-summary .audit-metric-panel__title {
+    margin-bottom: 0;
+}
+
+.audit-accordion-summary__icon {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    transition: transform 0.2s ease;
+}
+
+.audit-accordion-summary__icon::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--color-main-white);
+    border-bottom: 2px solid var(--color-main-white);
+    transform: rotate(45deg);
+}
+
+.audit-metric-panel--issues[open] .audit-accordion-summary {
+    margin-bottom: 28px;
+}
+
+.audit-metric-panel--issues[open] .audit-accordion-summary__icon {
+    transform: rotate(180deg);
 }
 
 .audit-metric-table__head,
@@ -1202,6 +1304,16 @@ button:hover {
     .audit-metric-panel__title {
         font-size: 24px;
     }
+
+    .audit-metric-panel__head {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .audit-category-score {
+        width: 100%;
+        box-sizing: border-box;
+    }
 }
 
 @media (max-width: 1280px) {
@@ -1362,14 +1474,14 @@ button:hover {
     font-weight: 500;
     line-height: 110%;
     background: transparent;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .home-header__cta:hover,
 .home-header__cta:focus-visible {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: #53606d;
-    transform: translateY(-1px);
+    background: var(--color-main-white);
+    border-color: var(--color-main-white);
+    color: var(--color-main-black);
 }
 
 .hero {
@@ -1554,11 +1666,20 @@ button:hover {
     flex-shrink: 0;
 }
 
+.home-category-card svg path {
+    transition: stroke 0.2s ease;
+}
+
 .home-category-card:hover,
 .home-category-card:focus-visible {
     background: #33404c;
     transform: translateY(-2px);
     box-shadow: 0 18px 34px rgba(7, 14, 20, 0.22);
+}
+
+.home-category-card:hover svg path,
+.home-category-card:focus-visible svg path {
+    stroke: var(--color-main-white);
 }
 
 @media (max-width: 1024px) {
@@ -2022,15 +2143,24 @@ button:hover {
 
 .modal-eyebrow {
     margin: 0 0 8px;
-    color: #4f6bb7;
+    color: var(--color-main-black);
+    font-family: "JetBrains Mono", monospace;
     font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 0.06em;
+    font-weight: 500;
+    letter-spacing: 0;
     text-transform: uppercase;
 }
 
 .modal-header h3 {
     margin: 0;
+    color: var(--color-main-black);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-transform: uppercase;
 }
 
 .modal-close {
@@ -2040,8 +2170,15 @@ button:hover {
     font-size: 28px;
     line-height: 1;
     border-radius: 999px;
-    background: #eef4ff;
-    color: #1f3c88;
+    background: #eceff3;
+    color: var(--color-main-black);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.modal-close:hover,
+.modal-close:focus-visible {
+    background: var(--color-main-black);
+    color: var(--color-main-white);
 }
 
 .modal-description {

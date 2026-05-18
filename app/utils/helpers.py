@@ -106,6 +106,18 @@ PERFORMANCE_METRIC_NAMES = {
     "overall_request_proxy_count",
 }
 
+ISSUE_SEVERITY_ORDER = {
+    "high": 0,
+    "medium": 1,
+    "low": 2,
+}
+
+ISSUE_SEVERITY_LABELS = {
+    "high": "Высокая",
+    "medium": "Средняя",
+    "low": "Низкая",
+}
+
 
 def get_metric_category(metric_name: str) -> str:
     if metric_name in SEO_METRIC_NAMES:
@@ -137,6 +149,30 @@ def group_metrics_by_category(metrics) -> dict[str, list]:
 
     for metric in metrics:
         grouped[get_metric_category(metric.metric_name)].append(metric)
+
+    return grouped
+
+
+def get_issue_severity_rank(severity: str) -> int:
+    return ISSUE_SEVERITY_ORDER.get(severity, 99)
+
+
+def get_issue_severity_label(severity: str) -> str:
+    return ISSUE_SEVERITY_LABELS.get(severity, severity)
+
+
+def group_issues_by_category(issues) -> dict[str, list]:
+    grouped = {
+        "seo": [],
+        "technical": [],
+        "performance": [],
+    }
+
+    for issue in issues:
+        grouped.setdefault(issue.category, []).append(issue)
+
+    for category_issues in grouped.values():
+        category_issues.sort(key=lambda issue: get_issue_severity_rank(issue.severity))
 
     return grouped
 

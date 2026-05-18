@@ -1,13 +1,12 @@
-from pathlib import Path
-
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import FileResponse
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
 from app.repositories.audit_repository import AuditRepository
 from app.schemas.audit import AuditCreateRequest, AuditListResponse, AuditResponse
 from app.services.audit_service import AuditService
+from app.services.report_service import ReportService
 
 router = APIRouter(prefix="/audits", tags=["Audits"])
 
@@ -64,24 +63,25 @@ def get_audit(audit_id: int, db: Session = Depends(get_db)):
 @router.get("/{audit_id}/report")
 def download_audit_report(audit_id: int, db: Session = Depends(get_db)):
     repository = AuditRepository(db)
-    report = repository.get_latest_report_by_audit_id(audit_id)
+    audit = repository.get_audit_by_id(audit_id)
 
-    if report is None:
+    if audit is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Report not found"
+            detail="Audit not found"
         )
 
-    report_path = Path(report.file_path)
-
-    if not report_path.exists():
+    if audit.status != "completed":
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Report file does not exist"
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Report is available only for completed audits"
         )
 
-    return FileResponse(
-        path=report_path,
+    pdf_content = ReportService().generate_audit_report(audit)
+    filename = f"audit_report_{audit.id}.pdf"
+
+    return Response(
+        content=pdf_content,
         media_type="application/pdf",
-        filename=report_path.name
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'}
     )
